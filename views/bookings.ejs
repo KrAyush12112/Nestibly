@@ -64,7 +64,7 @@
                         </div>
 
                         <div class="flex gap-3 pt-2">
-                            <a href="/detailed-view/<%= home._id %>" class="flex-1 text-center px-4 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 font-semibold text-sm">
+                            <a href="/detailed-view/<%= home.homeId._id  %>" class="flex-1 text-center px-4 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 font-semibold text-sm">
                                  View Details
                             </a>
                             <form action="/bookings/<%= home._id %>/cancel" method="POST" class="flex-1" onsubmit="return confirm('Are you sure you want to cancel this booking? This action cannot be undone.');">

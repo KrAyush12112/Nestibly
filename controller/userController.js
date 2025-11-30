@@ -11,7 +11,7 @@ exports.redirectHome = (request, response , next)=>{
     console.log("session data:", request.session);
     Database.find().then(
         (registeredHomes)=>{
-            console.log("Registered homes:", registeredHomes);
+            // console.log("Registered homes:", registeredHomes);
             response.render('welcome', {
                 registeredHomes,
                 title: "Welcome",
