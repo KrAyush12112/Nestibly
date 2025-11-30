@@ -1,0 +1,119 @@
+<nav class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white p-4 flex items-center justify-between shadow-lg border-b-2 border-emerald-500">
+    <div class="flex items-center space-x-3 ml-2 sm:ml-[5vw] md:ml-[3vw] lg:ml-[6vw] hover:scale-105 transition duration-300">
+        <a href="/" class="flex items-center space-x-1">
+            <img src="/images/logo.png" alt="Nestibly Logo" class="h-14 w-auto drop-shadow-lg hover:drop-shadow-emerald-500/50 transition">
+            <div class="animate-fade-in">
+                <h1 class="text-1xl md:text-2xl font-black bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">NESTIBLY</h1>
+                <p class="text-[10px] md:text-sm font-semibold text-emerald-300 drop-shadow-sm"> Find Your Cozy Getaway</p>
+            </div>
+        </a>
+    </div>
+
+    <!-- Hamburger Menu Button (visible only <= 375px) -->
+    <button
+        id="hamburger-btn"
+        type="button"
+        aria-label="Toggle navigation"
+        aria-expanded="false"
+        class="hidden max-[768px]:block md:hidden p-2 rounded-lg hover:bg-emerald-900/30 transition"
+    >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+
+    <!-- Desktop Menu -->
+    <div class="hidden md:block">
+        <ul class="flex items-center  mr-5 sm:mr-[2vw]">
+            <li><a href="/" class="px-3 py-2 hover:text-emerald-300 hover:bg-emerald-900/30 rounded-lg transition duration-300 font-medium">Home</a></li>
+            <li><a href="/Listed-Homes" class="px-3 py-2 hover:text-emerald-300 hover:bg-emerald-900/30 rounded-lg transition duration-300 font-medium">Listed Homes</a></li>
+
+            <% if(isLoggedIn){ %>
+                <% if(user && user.userType === 'guest'){ %>
+                    <li><a href="/favorites" class="px-3 py-2 hover:text-rose-300 hover:bg-rose-900/30 rounded-lg transition duration-300 font-medium">❤️ Favorites</a></li>
+                    <li><a href="/bookings" class="px-3 py-2 hover:text-blue-300 hover:bg-blue-900/30 rounded-lg transition duration-300 font-medium">📅 Bookings</a></li>
+                <% } else { %>
+                    <li><a href="/host/Manage-Homes" class="px-3 py-2 hover:text-amber-300 hover:bg-amber-900/30 rounded-lg transition duration-300 font-medium">Manage Properties</a></li>
+                    <li><a href="/host/add-home" class="px-4 py-2 rounded-full hover:text-emerald-300 transition duration-300 font-semibold">List Your Home</a></li>
+                <% } %>
+            <% } %>
+
+            <li><a href="<%= (isLoggedIn) ? '/auth/Log-out' : '/auth/Log-in' %>" class="px-4 py-2 rounded-full border-2 border-emerald-400 hover:bg-emerald-500 hover:border-emerald-600 text-emerald-300 hover:text-white transition duration-300 font-semibold"><%= (isLoggedIn) ? '👋 Log out' : '🔐 Log in' %></a></li>
+
+            <% if (!isLoggedIn) { %>
+                <li><a href="/auth/Sign-up" class="px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow-lg hover:shadow-emerald-500/50 transition duration-300 font-semibold hover:scale-105">✨ Sign up</a></li>
+            <% } %>
+        </ul>
+    </div>
+
+    <!-- Mobile Menu (toggled by hamburger, contains same links as desktop) -->
+    <div id="mobile-menu" class="hidden absolute top-20 left-1 right-0 bg-slate-900 border-b border-emerald-500 md:hidden z-50">
+        <ul class="flex flex-col space-y-2 p-4">
+            <li><a href="/" class="block px-3 py-2 hover:text-emerald-300 hover:bg-emerald-900/30 rounded-lg transition duration-300 font-medium">Home</a></li>
+            <li><a href="/Listed-Homes" class="block px-3 py-2 hover:text-emerald-300 hover:bg-emerald-900/30 rounded-lg transition duration-300 font-medium">Listed Homes</a></li>
+
+            <% if(isLoggedIn){ %>
+                <% if(user && user.userType === 'guest'){ %>
+                    <li><a href="/favorites" class="block px-3 py-2 hover:text-rose-300 hover:bg-rose-900/30 rounded-lg transition duration-300 font-medium">❤️ Favorites</a></li>
+                    <li><a href="/bookings" class="block px-3 py-2 hover:text-blue-300 hover:bg-blue-900/30 rounded-lg transition duration-300 font-medium">📅 Bookings</a></li>
+                <% } else { %>
+                    <li><a href="/host/Manage-Homes" class="block px-3 py-2 hover:text-amber-300 hover:bg-amber-900/30 rounded-lg transition duration-300 font-medium">🏠 Manage Properties</a></li>
+                    <li><a href="/host/add-home" class="block px-4 py-2 rounded-full hover:text-emerald-300 transition duration-300 font-semibold">+ List Your Home</a></li>
+                <% } %>
+            <% } %>
+
+            <li><a href="<%= (isLoggedIn) ? '/auth/Log-out' : '/auth/Log-in' %>" class="block px-4 py-2 rounded-full border-2 border-emerald-400 hover:bg-emerald-500 text-emerald-300 transition duration-300 font-semibold"><%= (isLoggedIn) ? '👋 Log out' : '🔐 Log in' %></a></li>
+
+            <% if (!isLoggedIn) { %>
+                <li><a href="/auth/Sign-up" class="block px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white transition duration-300 font-semibold">✨ Sign up</a></li>
+            <% } %>
+        </ul>
+    </div>
+</nav>
+
+<style>
+    @keyframes fade-in {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+        animation: fade-in 0.6s ease-out;
+    }
+</style>
+
+<script>
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    function isMobileNarrow() {
+        return window.innerWidth <= 768;
+    }
+
+    // Toggle only when viewport <= 375px
+    if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', () => {
+            if (!isMobileNarrow()) return;
+            const expanded = hamburgerBtn.getAttribute('aria-expanded') === 'true';
+            hamburgerBtn.setAttribute('aria-expanded', String(!expanded));
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+
+    // Close menu when a link is clicked
+    if (mobileMenu) {
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                if (hamburgerBtn) hamburgerBtn.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
+
+    // Hide mobile menu if the user resizes wider than 375px
+    window.addEventListener('resize', () => {
+        if (!isMobileNarrow()) {
+            mobileMenu.classList.add('hidden');
+            if (hamburgerBtn) hamburgerBtn.setAttribute('aria-expanded', 'false');
+        }
+    });
+</script>

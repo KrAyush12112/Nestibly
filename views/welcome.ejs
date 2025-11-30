@@ -1,0 +1,415 @@
+<%- include('partials/Header') %>
+
+<body>
+    <%- include('partials/nav') %>
+
+    <!-- Hero Section -->
+    <section class="hero-section relative overflow-hidden">
+        <!-- Animated Background -->
+        <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900">
+            <div class="absolute inset-0 opacity-40">
+                <div class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob"></div>
+                <div class="absolute top-1/2 right-1/4 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-2000"></div>
+                <div class="absolute bottom-0 left-1/2 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-10 min-h-screen flex items-center justify-center px-4 py-20">
+            <div class="max-w-6xl w-full">
+                <!-- Main Heading -->
+                <div class="text-center mb-12 animate-fade-in-down">
+                    <span class="inline-block px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 rounded-full text-cyan-200 font-semibold text-sm mb-6 border border-cyan-500/30 hover:border-cyan-500/60 transition">
+                        ✨ Your Next Adventure Awaits
+                    </span>
+                    <h1 class="font-black text-5xl md:text-7xl lg:text-8xl mb-8 bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-white to-indigo-300 drop-shadow-2xl leading-tight">
+                        Discover Extraordinary Stays
+                    </h1>
+                    <div class="h-1.5 w-32 bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 mx-auto mb-8 rounded-full shadow-lg shadow-cyan-500/50"></div>
+                    <p class="text-xl md:text-2xl text-indigo-100 drop-shadow-lg max-w-3xl mx-auto font-light tracking-wide leading-relaxed">
+                        Explore thousands of unique homes, from hidden gems to luxury escapes. Your perfect getaway is just a search away.
+                    </p>
+                </div>
+
+                <!-- Search Card -->
+                <div class="animate-fade-in-up max-w-4xl mx-auto">
+                    <div class="bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-indigo-900/40 backdrop-blur-xl rounded-3xl p-8 border border-cyan-500/20 hover:border-cyan-500/40 transition duration-500 shadow-2xl hover:shadow-indigo-500/20">
+                        <form class="grid grid-cols-1 md:grid-cols-5 gap-4" method="post" action="/search-results">
+                            <!-- Location Input -->
+                            <div class="md:col-span-2 group">
+                                <label for="location" class="block text-sm font-semibold text-cyan-200 mb-2">📍 Destination</label>
+                                <input name="location" placeholder="Where are you going?" 
+                                    class="w-full p-4 rounded-xl bg-white/10 border-2 border-cyan-500/30 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-300/20 text-white placeholder-gray-400 backdrop-blur transition duration-300 hover:bg-white/15 group-hover:border-cyan-400/50 font-medium">
+                            </div>
+
+                            <!-- Date Input -->
+                          <!-- <div class="md:col-span-1 group">
+    <label for="checkIn" class="block text-sm font-semibold text-cyan-200 mb-2">➡️ Check-in</label>
+    <input name="checkIn" type="date" required 
+        class="w-full p-4 rounded-xl bg-white/10 border-2 border-cyan-500/30 focus:border-cyan-400 ...">
+</div>
+
+<div class="md:col-span-1 group">
+    <label for="checkOut" class="block text-sm font-semibold text-cyan-200 mb-2">⬅️ Check-out</label>
+    <input name="checkOut" type="date" required 
+        class="w-full p-4 rounded-xl bg-white/10 border-2 border-cyan-500/30 focus:border-cyan-400 ...">
+</div> -->
+                            <div  class="md:col-span-1 group">
+                                <label for="dates" class="block text-sm font-semibold text-cyan-200 mb-2">📅 Dates</label>
+                                <input name="dates" type="date" placeholder="Check in/out" 
+                                    class="w-full p-4 rounded-xl bg-white/10 border-2 border-cyan-500/30 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-300/20 text-white placeholder-gray-400 backdrop-blur transition duration-300 hover:bg-white/15 group-hover:border-cyan-400/50 font-medium">
+                            </div>
+
+                            <!-- Guests Input -->
+                            <div class="md:col-span-1 group">
+                                <label for="guests" class="block text-sm font-semibold text-cyan-200 mb-2">👥 Guests</label>
+                                <input name="guests" type="number" placeholder="Add guests" min="1"
+                                    class="w-full p-4 rounded-xl bg-white/10 border-2 border-cyan-500/30 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-300/20 text-white placeholder-gray-400 backdrop-blur transition duration-300 hover:bg-white/15 group-hover:border-cyan-400/50 font-medium">
+                            </div>
+
+                            <!-- Search Button -->
+                            <div class="flex items-end">
+                                <button type="submit" class="w-full px-8 py-4 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-500 hover:from-cyan-400 hover:via-indigo-400 hover:to-purple-400 text-white rounded-xl font-black text-lg shadow-lg hover:shadow-2xl transition duration-300 transform hover:scale-105 hover:-translate-y-1 animate-pulse-slow border border-cyan-300/30">
+                                    🔍 Search
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Quick Filters -->
+                        <div class="mt-6 flex flex-wrap gap-3 justify-center">
+                            <button class="px-4 py-2 bg-indigo-500/20 hover:bg-indigo-500/40 border border-indigo-400/30 hover:border-indigo-400/60 text-indigo-200 rounded-full font-semibold text-sm transition duration-300 transform hover:scale-110">
+                                🏖️ Beach Houses
+                            </button>
+                            <button class="px-4 py-2 bg-cyan-500/20 hover:bg-cyan-500/40 border border-cyan-400/30 hover:border-cyan-400/60 text-cyan-200 rounded-full font-semibold text-sm transition duration-300 transform hover:scale-110">
+                                🏔️ Mountain Cabins
+                            </button>
+                            <button class="px-4 py-2 bg-purple-500/20 hover:bg-purple-500/40 border border-purple-400/30 hover:border-purple-400/60 text-purple-200 rounded-full font-semibold text-sm transition duration-300 transform hover:scale-110">
+                                🏙️ City Apartments
+                            </button>
+                            <button class="px-4 py-2 bg-emerald-500/20 hover:bg-emerald-500/40 border border-emerald-400/30 hover:border-emerald-400/60 text-emerald-200 rounded-full font-semibold text-sm transition duration-300 transform hover:scale-110">
+                                ✨ Luxury Villas
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trust Indicators -->
+                <div class="mt-16 grid grid-cols-3 gap-6 max-w-2xl mx-auto animate-fade-in-up text-center" style="animation-delay: 200ms;">
+                    <div class="group">
+                        <div class="text-3xl font-black bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent group-hover:text-cyan-300 transition">500K+</div>
+                        <p class="text-sm text-indigo-200 mt-1 group-hover:text-white transition">Happy Travelers</p>
+                    </div>
+                    <div class="group">
+                        <div class="text-3xl font-black bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent group-hover:text-indigo-300 transition">50K+</div>
+                        <p class="text-sm text-indigo-200 mt-1 group-hover:text-white transition">Amazing Homes</p>
+                    </div>
+                    <div class="group">
+                        <div class="text-3xl font-black bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent group-hover:text-purple-300 transition">4.9★</div>
+                        <p class="text-sm text-indigo-200 mt-1 group-hover:text-white transition">Average Rating</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+         <section class="how-it-works-section py-20 bg-gray-900 text-white">
+        <div class="mx-auto px-4 max-w-7xl">
+            <div class="text-center mb-16 animate-fade-in-down">
+                <h2 class="font-black text-4xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-cyan-400 to-indigo-400 mb-3">Your Journey Starts Here</h2>
+                <p class="text-indigo-200 text-lg max-w-2xl mx-auto">Booking your dream stay in 3 simple steps.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="text-center p-8 bg-slate-800 rounded-3xl shadow-xl border-t-4 border-cyan-500 transform transition duration-500 hover:scale-[1.05] animate-fade-in-up">
+                    <div class="w-16 h-16 bg-cyan-500 rounded-full flex items-center justify-center text-white text-3xl font-black mx-auto mb-6">1</div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Find Your Vibe</h3>
+                    <p class="text-indigo-200">Use our smart filters to browse thousands of unique homes and experiences worldwide.</p>
+                </div>
+
+                <div class="text-center p-8 bg-slate-800 rounded-3xl shadow-xl border-t-4 border-indigo-500 transform transition duration-500 hover:scale-[1.05] animate-fade-in-up" style="animation-delay: 150ms;">
+                    <div class="w-16 h-16 bg-indigo-500 rounded-full flex items-center justify-center text-white text-3xl font-black mx-auto mb-6">2</div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Secure Your Booking</h3>
+                    <p class="text-indigo-200">Book instantly with verified hosts and enjoy secure payment options.</p>
+                </div>
+
+                <div class="text-center p-8 bg-slate-800 rounded-3xl shadow-xl border-t-4 border-emerald-500 transform transition duration-500 hover:scale-[1.05] animate-fade-in-up" style="animation-delay: 300ms;">
+                    <div class="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center text-white text-3xl font-black mx-auto mb-6">3</div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Enjoy Your Stay</h3>
+                    <p class="text-indigo-200">Receive 24/7 support and unforgettable memories waiting at your doorstep.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="features-section py-20  from-blue-50 via-cyan-50 to-teal-50 bg-gradient-to-r">
+        <div class="mx-auto px-4 max-w-7xl">
+            <div class="text-center mb-16 animate-fade-in-down">
+                <h2 class="font-black text-5xl bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 mb-3">Why Choose Roostify?</h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Experience the best in vacation rentals with our curated selection</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="group p-8 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-l-4 border-emerald-500 animate-fade-in-up hover:bg-emerald-50/30">
+                    <div class="p-4 bg-gradient-to-br from-emerald-100 to-emerald-50 rounded-lg inline-block mb-4 group-hover:scale-110 transition">
+                        <svg class="w-8 h-8 text-emerald-600 animate-bounce" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Verified Listings</h3>
+                    <p class="text-gray-600">All properties are verified and quality-checked by our expert team</p>
+                </div>
+                <div class="group p-8 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-l-4 border-blue-500 animate-fade-in-up hover:bg-blue-50/30" style="animation-delay: 100ms;">
+                    <div class="p-4 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg inline-block mb-4 group-hover:scale-110 transition">
+                        <svg class="w-8 h-8 text-blue-600 animate-bounce" fill="currentColor" viewBox="0 0 24 24" style="animation-delay: 200ms;"><path d="M12 1C6.48 1 2 5.48 2 11s4.48 10 10 10 10-4.48 10-10S17.52 1 12 1zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 7 15.5 7 14 7.67 14 8.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 7 8.5 7 7 7.67 7 8.5 7.67 10 8.5 10zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">24/7 Support</h3>
+                    <p class="text-gray-600">Our dedicated team is always available to help with any questions</p>
+                </div>
+                <div class="group p-8 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-l-4 border-pink-500 animate-fade-in-up hover:bg-pink-50/30" style="animation-delay: 200ms;">
+                    <div class="p-4 bg-gradient-to-br from-pink-100 to-pink-50 rounded-lg inline-block mb-4 group-hover:scale-110 transition">
+                        <svg class="w-8 h-8 text-pink-600 animate-bounce" fill="currentColor" viewBox="0 0 24 24" style="animation-delay: 400ms;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 7 15.5 7 14 7.67 14 8.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 7 8.5 7 7 7.67 7 8.5 7.67 10 8.5 10zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Best Prices</h3>
+                    <p class="text-gray-600">Competitive rates and exclusive deals for Roostify members</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Picks Section / Homes -->
+    <section class="top-picks-section py-20 bg-gradient-to-br from-purple-50 via-white to-indigo-50">
+        <div class="mx-auto px-4 max-w-7xl">
+            <div class="text-center mb-16 animate-fade-in-down">
+                <h2 class="font-black text-5xl bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 mb-3">Our Top Picks</h2>
+                <p class="text-gray-600 text-lg">Hand-picked properties just for you</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <% if (registeredHomes && registeredHomes.length > 0) { %>
+                    <% registeredHomes.forEach( (home, index) => { %>
+                    <div class="group bg-white rounded-3xl shadow-lg overflow-hidden relative hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 animate-fade-in-up hover:border-2 hover:border-purple-300" style="animation-delay: <%= index * 100 %>ms;">
+                        <div class="relative overflow-hidden h-64">
+                            <img src="<%= home.image[0] %>" alt="Home Image" class="w-full h-full object-cover transform group-hover:scale-125 transition-transform duration-500" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                        </div>
+                        <form action="/favorites/add/<%= home._id %>" method="POST">
+                            <button type="submit" class="absolute top-4 right-4 p-3 bg-white/90 backdrop-blur rounded-full shadow-lg text-gray-600 hover:text-red-500 hover:scale-125 transition-all duration-300 transform hover:rotate-12 group-hover:bg-red-50 animate-bounce-slow">
+                                <svg class="w-6 h-6" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                            </button>
+                        </form>
+
+                        <div class="p-6 space-y-4 bg-gradient-to-br from-white to-purple-50">
+                            <h2 class="text-2xl font-black text-gray-800 group-hover:text-purple-600 transition duration-300"><%= home.title %></h2>
+                            <div class="flex items-center text-gray-600 text-lg font-medium">
+                                <svg class="w-5 h-5 mr-2 text-purple-500 animate-bounce" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
+                                <%= home.location %>
+                            </div>
+                            <div class="flex items-baseline gap-2">
+                                <p class="text-4xl font-black bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent animate-pulse">₹ <%= home.price %></p>
+                                <span class="text-gray-500 font-semibold">/ night</span>
+                            </div>
+
+                            <a href="/detailed-view/<%= home._id %>" class="inline-block mt-4 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl hover:shadow-xl transition duration-300 text-base font-bold transform hover:scale-110 hover:from-purple-400 hover:to-indigo-400 animate-fade-in-up">
+                                View Details →
+                            </a>
+                        </div>
+                    </div>
+                    <% }) %>
+                <% } else { %>
+                    <p class="col-span-full text-center text-gray-600 text-lg animate-pulse">No registered homes found. Why not <a href="/host/add-home" class="text-purple-600 hover:underline font-bold">add one</a>?</p>
+                <% } %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+   <section class="stats-section py-20 bg-gray-900 border-y-4 border-indigo-500">
+        <div class="mx-auto px-4 max-w-7xl">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-white text-center">
+                <div class="group p-6 rounded-2xl transition duration-500 transform hover:scale-105 animate-fade-in-up">
+                    <h3 class="text-5xl font-black mb-2 text-indigo-400 group-hover:text-indigo-300 transition">50K+</h3>
+                    <p class="text-indigo-200 text-lg font-semibold">Happy Guests</p>
+                </div>
+                <div class="group p-6 rounded-2xl transition duration-500 transform hover:scale-105 animate-fade-in-up" style="animation-delay: 100ms;">
+                    <h3 class="text-5xl font-black mb-2 text-cyan-400 group-hover:text-cyan-300 transition">10K+</h3>
+                    <p class="text-cyan-200 text-lg font-semibold">Unique Homes</p>
+                </div>
+                <div class="group p-6 rounded-2xl transition duration-500 transform hover:scale-105 animate-fade-in-up" style="animation-delay: 200ms;">
+                    <h3 class="text-5xl font-black mb-2 text-emerald-400 group-hover:text-emerald-300 transition">150+</h3>
+                    <p class="text-emerald-200 text-lg font-semibold">Destinations</p>
+                </div>
+                <div class="group p-6 rounded-2xl transition duration-500 transform hover:scale-105 animate-fade-in-up" style="animation-delay: 300ms;">
+                    <h3 class="text-5xl font-black mb-2 text-yellow-400 group-hover:text-yellow-300 transition">4.9★</h3>
+                    <p class="text-yellow-200 text-lg font-semibold">Avg. Rating</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section py-20 bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-50">
+        <div class="mx-auto px-4 max-w-7xl">
+            <div class="text-center mb-16 animate-fade-in-down">
+                <h2 class="font-black text-5xl bg-clip-text text-transparent bg-gradient-to-r from-amber-600 via-orange-600 to-amber-600 mb-3">What Guests Say</h2>
+                <p class="text-gray-600 text-lg">Read reviews from our satisfied travelers</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 border-t-4 border-emerald-500 animate-fade-in-up hover:bg-emerald-50/30">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-full flex items-center justify-center text-white font-bold animate-pulse">AC</div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-gray-800">Alex Chen</h4>
+                            <p class="text-sm text-gray-500">Verified Guest</p>
+                        </div>
+                    </div>
+                    <div class="flex text-yellow-400 mb-3 animate-bounce">★★★★★</div>
+                    <p class="text-gray-600 italic">"Amazing experience! The property was exactly as described and the host was incredibly helpful. Will definitely book again!"</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 border-t-4 border-pink-500 animate-fade-in-up hover:bg-pink-50/30" style="animation-delay: 100ms;">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-rose-400 rounded-full flex items-center justify-center text-white font-bold animate-pulse" style="animation-delay: 200ms;">SJ</div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-gray-800">Sarah Johnson</h4>
+                            <p class="text-sm text-gray-500">Verified Guest</p>
+                        </div>
+                    </div>
+                    <div class="flex text-yellow-400 mb-3 animate-bounce" style="animation-delay: 200ms;">★★★★★</div>
+                    <p class="text-gray-600 italic">"Fantastic service and support. Made my family vacation unforgettable. Highly recommend Roostify!"</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 border-t-4 border-blue-500 animate-fade-in-up hover:bg-blue-50/30" style="animation-delay: 200ms;">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-full flex items-center justify-center text-white font-bold animate-pulse" style="animation-delay: 400ms;">MK</div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-gray-800">Michael Kim</h4>
+                            <p class="text-sm text-gray-500">Verified Guest</p>
+                        </div>
+                    </div>
+                    <div class="flex text-yellow-400 mb-3 animate-bounce" style="animation-delay: 400ms;">★★★★★</div>
+                    <p class="text-gray-600 italic">"Best vacation rental platform I've used. Great selection and unbeatable prices!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-20">
+        <div class="bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 rounded-3xl shadow-2xl overflow-hidden text-white mx-auto px-6 py-16 max-w-7xl flex flex-col md:flex-row items-center justify-between border-2 border-indigo-500/30 relative group transform hover:scale-105 transition duration-500 animate-fade-in-up"
+             style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTIyMjh8MHwxfHNlYXJjaHwyMHx8aG9tZSUyMGludGVyaW9yfGVufDB8fHx8MTcwODY0MzY0NXww&ixlib=rb-4.0.3&q=80&w=1080'); background-size: cover; background-position: center;">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/70 group-hover:from-black/60 transition duration-500"></div>
+            <div class="relative z-10 text-center md:text-left mb-8 md:mb-0 animate-fade-in-up">
+                <h3 class="text-5xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 to-cyan-300">Become a Roostify Host</h3>
+                <p class="text-lg md:text-xl text-indigo-100 font-medium">Earn extra income and unlock new opportunities by sharing your home.</p>
+            </div>
+            <div class="relative z-10">
+                <a href="/host/add-home" class="px-8 py-4 bg-gradient-to-r from-indigo-500 to-cyan-500 text-white font-black rounded-xl hover:shadow-2xl transition duration-300 text-xl shadow-lg transform hover:scale-110 hover:from-indigo-400 hover:to-cyan-400 inline-block whitespace-nowrap animate-bounce">
+                    Learn More →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section bg-gradient-to-b from-slate-900 to-slate-950 text-white py-16 border-t-4 border-indigo-500 mt-0">
+        <div class="mx-auto max-w-7xl px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="group animate-fade-in-up">
+                <h4 class="font-black text-xl mb-6 text-indigo-400 group-hover:text-indigo-300 transition">About Roostify</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">How it works</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Newsroom</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Investors</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Roostify Plus</a></li>
+                </ul>
+            </div>
+            <div class="group animate-fade-in-up" style="animation-delay: 100ms;">
+                <h4 class="font-black text-xl mb-6 text-indigo-400 group-hover:text-indigo-300 transition">Community</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Diversity & Belonging</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Accessibility</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Host a Home</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Referrals</a></li>
+                </ul>
+            </div>
+            <div class="group animate-fade-in-up" style="animation-delay: 200ms;">
+                <h4 class="font-black text-xl mb-6 text-indigo-400 group-hover:text-indigo-300 transition">Host</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Host your home</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Host an experience</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Hosting resources</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Community forum</a></li>
+                </ul>
+            </div>
+            <div class="group animate-fade-in-up" style="animation-delay: 300ms;">
+                <h4 class="font-black text-xl mb-6 text-indigo-400 group-hover:text-indigo-300 transition">Support</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Help Center</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Safety information</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Cancellation options</a></li>
+                    <li><a href="#" class="hover:text-indigo-300 transition duration-300 font-medium hover:translate-x-2 inline-block">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center mt-12 pt-8 border-t border-slate-700 text-gray-400 text-sm animate-fade-in-up">
+            <p>&copy; 2024 Roostify, Inc. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        @keyframes blob {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+        @keyframes fade-in-down {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-down {
+            animation: fade-in-down 1s ease-out;
+        }
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fade-in-up 1s ease-out 0.3s both;
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-bounce-slow {
+            animation: bounce-slow 2s infinite;
+        }
+    </style>
+</body>
+</html>

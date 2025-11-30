@@ -1,0 +1,67 @@
+<%- include('partials/Header') %>
+
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 text-gray-800 font-sans h-screen flex flex-col">
+    <%- include('partials/nav') %>
+
+    <div class="flex-1 flex items-center justify-center px-4">
+        <div class="max-w-md w-full">
+            <!-- Success Icon -->
+            <div class="flex justify-center mb-6">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-green-400 rounded-full opacity-20 animate-pulse" style="animation: pulse 2s infinite;"></div>
+                    <div class="relative w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 space-y-4">
+                <div class="text-center space-y-2">
+                    <h1 class="text-2xl font-bold text-gray-900">Booking Confirmed!</h1>
+                    <p class="text-sm text-gray-600">Your reservation has been successfully made.</p>
+                </div>
+
+                <!-- Booking Details -->
+                <div class="bg-gray-50 rounded-xl p-4 space-y-3 text-sm">
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                        <span class="text-gray-600">Booking Reference</span>
+                        <span class="font-semibold text-gray-900"><%= booking.bookingRef %></span>
+                    </div>
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                        <span class="text-gray-600">Date</span>
+                        <span class="font-semibold text-gray-900"><%= booking.checkIn.toDateString() %> - <%= booking.checkOut.toDateString() %></span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Status</span>
+                        <span class="inline-block bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full">Confirmed</span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="space-y-2">
+                    <a  href="/bookings" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-colors duration-200 text-sm">
+                        View Booking Details
+                    </a>
+                    <button class="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold py-2.5 rounded-lg transition-colors duration-200 text-sm">
+                        Download Confirmation
+                    </button>
+                </div>
+
+                <!-- Footer Text -->
+                <p class="text-center text-xs text-gray-500">
+                    A confirmation email has been sent to your registered email address.
+                </p>
+
+                <!-- Back Link -->
+                <div class="text-center pt-2">
+                    <a href="/" class="text-blue-600 hover:text-blue-700 font-medium text-xs">← Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

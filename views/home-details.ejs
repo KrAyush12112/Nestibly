@@ -1,0 +1,355 @@
+<%- include('partials/Header') %>
+<body>
+  <%- include('partials/nav') %>
+  <section class="py-16 bg-white min-h-screen">
+    <div class="mx-auto px-4 max-w-7xl">
+
+      <div class="mb-8 animate-fade-in">
+        <h1 class="font-extrabold text-5xl md:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-pink-600 mb-3 leading-tight tracking-tight">
+          <%= home.title %>
+        </h1>
+        <div class="flex items-center justify-between flex-wrap mb-4">
+          <p class="text-gray-600 text-xl font-medium flex items-center gap-3">
+            <svg class="w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
+            <%= home.location %>
+          </p>
+          <div class="flex items-center gap-4 flex-wrap">
+            <span class="inline-flex items-center gap-1 bg-yellow-50 px-4 py-2 rounded-full text-yellow-700 font-bold border border-yellow-200 text-base">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.817 2.042a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.817-2.042a1 1 0 00-1.175 0l-2.817 2.042c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg> 
+              4.8 <span class="text-gray-500 font-normal ml-1">(125 reviews)</span>
+            </span>
+            <span class="inline-flex items-center gap-2 bg-purple-50 px-4 py-2 rounded-full text-purple-700 font-semibold border border-purple-200 text-base">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+              Entire Home
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-3 rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300">
+          <!-- Main large image -->
+          <div class="<%= home.image.length <= 3 ? 'md:col-span-2 md:row-span-2' : 'md:col-span-2 md:row-span-2' %> relative group overflow-hidden">
+        <img src="<%= home.image[0] %>" alt="Main Image" class="w-full h-full min-h-[400px] object-cover group-hover:scale-105 transition-transform duration-500 cursor-zoom-in" />
+        <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-15 transition-opacity duration-300"></div>
+          </div>
+          <!-- Gallery grid (up to 4 more images) -->
+          <% for (let i = 1; i < 5; i++) { %>
+        <% if (home.image[i]) { %>
+          <div class="h-48 relative group overflow-hidden <%= home.image.length > 5 && i === 4 ? 'cursor-pointer' : '' %>" onclick="<%= home.image.length > 5 && i === 4 ? 'openGallery()' : '' %>">
+            <img src="<%= home.image[i] %>" alt="Gallery <%= i + 1 %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 <%= home.image.length > 5 && i === 4 ? 'blur-sm' : '' %>" />
+            <% if (home.image.length > 5 && i === 4) { %>
+          <div class="absolute inset-0 bg-black opacity-60 backdrop-blur-sm flex items-center justify-center">
+            <div class="text-center">
+              <p class="text-white font-bold text-lg">+<%= home.image.length - 5 %></p>
+              <p class="text-white text-sm">View More</p>
+            </div>
+          </div>
+            <% } %>
+          </div>
+        <% } %>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Modal Gallery -->
+      <div id="galleryModal" class="hidden fixed inset-0 backdrop-blur bg-black-100 z-50 flex items-center justify-center p-4" onclick="closeGallery(event)">
+        <div class="relative w-full max-w-4xl" onclick="event.stopPropagation()">
+          <button onclick="closeGallery()" class="absolute -top-10 right-0 text-white text-3xl hover:text-gray-300 font-bold">&times;</button>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[70vh] overflow-y-auto">
+            <% home.image.slice(0, 10).forEach((img, index) => { %>
+              <div class="aspect-square overflow-hidden rounded-lg cursor-pointer hover:opacity-80 transition">
+                <img src="<%= img %>" alt="Gallery <%= index + 1 %>" class="w-full h-full object-cover" />
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+      <style>
+        body::before {
+          content: '';
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: radial-gradient(circle at center, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 100%);
+          pointer-events: none;
+          z-index: -1;
+        }
+      </style>
+      <script>
+        function openGallery() {
+          document.getElementById('galleryModal').classList.remove('hidden');
+        }
+        function closeGallery(event) {
+          if (event && event.target.id !== 'galleryModal') return;
+          document.getElementById('galleryModal').classList.add('hidden');
+        }
+      </script>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        
+        <div class="lg:col-span-2 space-y-12">
+          
+          <div class="pb-8 border-b border-gray-200 flex items-center gap-6">
+            <div class="flex-shrink-0">
+              <div class="w-16 h-16 bg-purple-200 rounded-full flex items-center justify-center text-xl font-bold text-purple-800 border-4 border-white shadow-lg"><%= home.user ? home.user.fullName.charAt(0) : '' %></div>
+            </div>
+            <div>
+              <h2 class="font-bold text-2xl text-gray-800 mb-1">Hosted by <%= home.user ? home.user.fullName : '' %></h2>
+              <p class="text-gray-500 text-base">Superhost | Joined in <%= home.user ? home.user.createdAt.getFullYear() : '' %></p>
+            </div>
+          </div>
+
+          <div class="pb-8 border-b border-gray-200">
+            <h2 class="font-bold text-3xl text-gray-800 mb-5">About this place</h2>
+            <p class="text-gray-700 text-lg leading-relaxed"><%= home.description %></p>
+            <button class="mt-4 text-purple-600 font-semibold hover:text-purple-800 transition duration-150 flex items-center gap-1">
+              Show more 
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+          </div>
+
+          <div class="pb-8 border-b border-gray-200">
+            <h2 class="font-bold text-3xl text-gray-800 mb-6">What this place offers</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+              <div class="flex items-center gap-3 p-4 bg-gradient-to-br from-blue-50 to-white rounded-xl border border-blue-100 shadow-sm transition-all duration-200 hover:shadow-md hover:border-blue-200">
+                <span class="text-2xl">🏊</span> <span class="font-medium text-gray-700">Swimming Pool</span>
+              </div>
+              <!-- primary action button removed from here (kept in booking form on the right) -->
+              <div class="flex items-center gap-3 p-4 bg-gradient-to-br from-orange-50 to-white rounded-xl border border-orange-100 shadow-sm transition-all duration-200 hover:shadow-md hover:border-orange-200">
+
+            
+                <span class="text-2xl">🍳</span> <span class="font-medium text-gray-700">Fully Equipped Kitchen</span>
+              </div>
+              <div class="flex items-center gap-3 p-4 bg-gradient-to-br from-cyan-50 to-white rounded-xl border border-cyan-100 shadow-sm transition-all duration-200 hover:shadow-md hover:border-cyan-200">
+                <span class="text-2xl">❄️</span> <span class="font-medium text-gray-700">Central Air Conditioning</span>
+              </div>
+              <div class="flex items-center gap-3 p-4 bg-gradient-to-br from-pink-50 to-white rounded-xl border border-pink-100 shadow-sm transition-all duration-200 hover:shadow-md hover:border-pink-200">
+                <span class="text-2xl">💻</span> <span class="font-medium text-gray-700">Dedicated Workspace</span>
+              </div>
+              <div class="flex items-center gap-3 p-4 bg-gradient-to-br from-purple-50 to-white rounded-xl border border-purple-100 shadow-sm transition-all duration-200 hover:shadow-md hover:border-purple-200">
+                <span class="text-2xl">🚗</span> <span class="font-medium text-gray-700">Free Parking</span>
+              </div>
+            </div>
+            <button class="mt-8 px-6 py-2 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition duration-200">
+              Show all amenities
+            </button>
+          </div>
+
+          <div class="pb-8 border-b border-gray-200">
+            <h2 class="font-bold text-3xl text-gray-800 mb-8 flex items-center gap-3">
+              <span class="text-3xl text-yellow-500">⭐</span> 4.8 · 125 Reviews
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="flex justify-between items-start mb-2">
+                  <p class="font-semibold text-gray-800 text-lg">Great place to stay!</p>
+                  <span class="text-sm text-yellow-500 font-bold">⭐⭐⭐⭐⭐</span>
+                </div>
+                <p class="text-sm text-gray-500 mb-3 font-medium">John Doe • August 2025</p>
+                <p class="text-gray-600 text-base">Amazing property with wonderful hospitality. The views were breathtaking and everything was exactly as described.</p>
+              </div>
+
+              <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="flex justify-between items-start mb-2">
+                  <p class="font-semibold text-gray-800 text-lg">Perfect Weekend Getaway</p>
+                  <span class="text-sm text-yellow-500 font-bold">⭐⭐⭐⭐</span>
+                </div>
+                <p class="text-sm text-gray-500 mb-3 font-medium">Jane Smith • July 2025</p>
+                <p class="text-gray-600 text-base">Very clean and comfortable. Only minor issue was the wifi speed, but otherwise highly recommended!</p>
+              </div>
+            </div>
+            <button class="mt-8 px-6 py-2 border border-purple-300 text-purple-600 font-semibold rounded-lg hover:bg-purple-50 transition duration-200">
+              Show all 125 reviews
+            </button>
+          </div>
+
+          <div class="pb-8">
+            <h2 class="font-bold text-3xl text-gray-800 mb-6">Where you'll be</h2>
+            <p class="text-gray-600 mb-4 text-lg">Located in the heart of <%= home.location %>, providing easy access to all local attractions.</p>
+            <div class="w-full h-80 bg-gray-200 rounded-xl overflow-hidden shadow-lg border border-gray-300 flex items-center justify-center">
+              <p class="text-gray-500 font-medium">Unable to load map</p>
+              </div>
+          </div>
+
+        </div>
+        <!-- form -->
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-3xl shadow-2xl p-7 sticky top-24 border border-gray-200 backdrop-blur-sm bg-opacity-95 transform hover:shadow-3xl transition-shadow duration-300">
+            
+            <div class="mb-6 pb-6 border-b border-gray-200">
+              <div class="flex items-baseline gap-2">
+                <span class="text-5xl font-extrabold text-gray-900 tracking-tight">₹ <%= home.price %></span>
+                <span class="text-lg text-gray-500 font-medium">/night</span>
+              </div>
+            </div>
+            <% if (typeof message !== 'undefined' && message) { %>
+              <div class="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm font-semibold">
+                <%= message %>
+              </div>
+            <% } %>
+            <!-- Form -->
+            <form id="bookingForm" action="/bookings/<%= home.id %>" method="POST">
+              <div class="space-y-5 mb-6">
+                <div class="grid grid-cols-2 gap-3 border border-gray-300 rounded-xl p-3">
+                  <div>
+                    <label for="checkIn" class="block text-xs font-bold text-gray-500 uppercase mb-1">Check In</label>
+                    <input type="date" id="checkIn" name="checkIn" required  value="<%= typeof checkIn !== 'undefined' ? checkIn : '' %>" class="w-full text-base bg-transparent border-none p-0 focus:ring-0 focus:outline-none text-gray-800 font-medium" />
+                  </div>
+                  <div class="pl-3 border-l border-gray-200">
+                    <label for="checkOut" class="block text-xs font-bold text-gray-500 uppercase mb-1">Check Out</label>
+                    <input type="date" id="checkOut" name="checkOut" required value="<%= typeof checkOut !== 'undefined' ? checkOut : '' %>" class="w-full text-base bg-transparent border-none p-0 focus:ring-0 focus:outline-none text-gray-800 font-medium" />
+                  </div>
+                </div>
+                <div class="border border-gray-300 rounded-xl p-3">
+                  <label for="guests" class="block text-xs font-bold text-gray-500 uppercase mb-1">Guests</label>
+                  <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                    <button type="button" class="px-3 py-2 text-gray-600 hover:bg-gray-100 transition" onclick="decrementGuests()">−</button>
+                    <input type="number" id="guests" name="guests" value="<%= typeof guests !== 'undefined' ? guests : '1' %>" min="1" class="w-full text-center border-none focus:ring-0 focus:outline-none text-lg font-medium" />
+                    <button type="button" class="px-3 py-2 text-gray-600 hover:bg-gray-100 transition" onclick="incrementGuests()">+</button>
+                  </div>
+                </div>  
+                <script>
+                  function incrementGuests() { document.getElementById('guests').value = Math.max(1, parseInt(document.getElementById('guests').value) + 1); }
+                  function decrementGuests() { document.getElementById('guests').value = Math.max(1, parseInt(document.getElementById('guests').value) - 1); }
+                </script>
+              </div>
+
+              <!-- message placeholder for AJAX errors / success -->
+              <div id="availabilityMessage"></div>
+
+              <!-- <% if(typeof priceFlag !== 'undefined' && priceFlag) { %>
+                <div class="space-y-3 mb-6 pb-6 border-b border-gray-100 text-base text-gray-700">
+                  <div class="flex justify-between">
+                    <span>₹<%= home.price %> x <%= nights %> nights</span>
+                    <span>₹<%= home.price * nights %></span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Service Fee (including taxes)</span>
+                    <span>₹500</span>
+                  </div>
+                </div>
+                <div class="flex justify-between font-bold text-xl text-gray-900 mb-6">
+                  <span>Total before taxes</span>
+                  <span>₹<%= home.price * nights + 500 %></span>
+                </div>
+              <% } %> -->
+
+              <!-- AJAX price box (hidden until availability confirmed) -->
+              <div id="ajaxPriceBox" class="space-y-3 mb-6 pb-6 border-b border-gray-100 text-base text-gray-700" style="display:none;">
+                <div class="flex justify-between">
+                  <span id="ajaxPriceNights"></span>
+                  <span id="ajaxPriceTotal"></span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Service Fee (including taxes)</span>
+                  <span>₹500</span>
+                </div>
+              </div>
+              <div id="ajaxPriceTotalBox" class="flex justify-between font-bold text-xl text-gray-900 mb-6" style="display:none;">
+                  <span>Total Amount To Pay</span>
+                  <span id="ajaxPriceBeforeTax"></span>
+              </div>
+
+              <button id="primaryActionButton" class="w-full px-4 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl hover:from-purple-700 hover:to-indigo-700 hover:shadow-xl transition duration-300 font-extrabold mb-4 text-lg transform hover:scale-[1.01] active:scale-[0.99]">
+                <%= priceFlag ? "Book Now" : "Check Availability" %>
+              </button>
+            </form>
+
+            <script>
+              (function(){
+                const form = document.getElementById('bookingForm');
+                const btn = document.getElementById('primaryActionButton');
+                const messageEl = document.getElementById('availabilityMessage');
+                const ajaxPriceBox = document.getElementById('ajaxPriceBox');
+                const ajaxPriceTotalBox = document.getElementById('ajaxPriceTotalBox');
+                const ajaxPriceNights = document.getElementById('ajaxPriceNights');
+                const ajaxPriceTotal = document.getElementById('ajaxPriceTotal');
+                const ajaxPriceBeforeTax = document.getElementById('ajaxPriceBeforeTax');
+
+                // server-rendered flag whether a check already happened
+                let checked = <%= !!checkAvailability %>;
+                const HOME_ID = '<%= home.id %>';
+                const unitPrice = <%= home.price || 0 %>;
+
+                const checkInInput = document.getElementById('checkIn');
+                const checkOutInput = document.getElementById('checkOut');
+                const guestsInput = document.getElementById('guests');
+
+                // When user edits dates/guests after a successful check, clear the availability state
+                function resetAvailability() {
+                  checked = false;
+                  ajaxPriceBox.style.display = 'none';
+                  ajaxPriceTotalBox.style.display = 'none';
+                  messageEl.innerHTML = '';
+                  btn.textContent = 'Check Availability';
+                }
+
+                [checkInInput, checkOutInput, guestsInput].forEach(el => {
+                  if (el) el.addEventListener('input', resetAvailability);
+                });
+
+                form.addEventListener('submit', async function(e){
+                  // if availability has not been confirmed client-side, intercept and perform AJAX check
+                  if (!checked) {
+                    e.preventDefault();
+                    // Clear any existing message
+                    messageEl.innerHTML = '';
+                    try {
+                      const data = new URLSearchParams(new FormData(form));
+                      const resp = await fetch('/bookings/checkAvailability/' + HOME_ID, {
+                        method: 'POST',
+                        body: data,
+                        headers: { 'Accept': 'application/json' }
+                      });
+                      const json = await resp.json();
+
+                      if (!resp.ok || !json.available) {
+                        // show error inline
+                        messageEl.innerHTML = `<div class="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm font-semibold">${json.message || 'Unavailable'}</div>`;
+                        // scroll form into view so user sees the message
+                        form.scrollIntoView({behavior: 'smooth', block: 'center'});
+                        return;
+                      }
+
+                      // available -> show price, update UI and allow final booking
+                      checked = true;
+                      // Update the JS price boxes
+                      ajaxPriceNights.textContent = '₹' + unitPrice + ' x ' + json.nights + ' nights';
+                      ajaxPriceTotal.textContent = '₹' + (unitPrice * json.nights);
+                      ajaxPriceBeforeTax.textContent = '₹' + ((unitPrice * json.nights) + 500);
+                      ajaxPriceBox.style.display = '';
+                      ajaxPriceTotalBox.style.display = '';
+
+                      // Change button to Book Now (now that availability is confirmed)
+                      btn.textContent = 'Book Now';
+
+                      // keep a shallow anchor or focus on form so user isn't moved
+                      btn.focus();
+
+                    } catch (err) {
+                      console.error('Availability check failed', err);
+                      messageEl.innerHTML = `<div class="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm font-semibold">Server error while checking availability</div>`;
+                    }
+                  } else {
+                    // availability already checked client-side (or server-rendered), proceed with form submit
+                  }
+                });
+              })();
+            </script>
+
+            <form action="/favorites/add/<%= home._id %>" method="POST">
+              <button type="submit" class="w-full px-4 py-3 border-2 border-purple-300 text-purple-600 rounded-xl hover:bg-purple-50 transition duration-300 font-semibold flex items-center justify-center gap-2">
+                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                Save to Favorites
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

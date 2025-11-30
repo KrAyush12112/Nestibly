@@ -1,0 +1,138 @@
+<%- include('../partials/Header') %>
+
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <!-- Subtle animated background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none opacity-40">
+        <div class="absolute top-20 right-10 w-72 h-72 bg-blue-300 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 left-10 w-72 h-72 bg-purple-300 rounded-full blur-3xl"></div>
+    </div>
+
+    <%- include('../partials/nav') %>
+
+    <main class="flex items-center justify-center px-4 relative z-10 h-[calc(100vh-80px)]">
+        <div class="w-full max-w-6xl">
+            <!-- Card Container - Two Column Layout -->
+            <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden flex h-[80vh]">
+                
+                <!-- Left Side - Image -->
+                <div class="hidden lg:flex w-1/2 bg-gradient-to-br from-blue-600 to-purple-600 items-center justify-center p-8">
+                    <div class="text-center text-white">
+                        <div class="w-32 h-32 rounded-3xl bg-white/20 flex items-center justify-center text-6xl font-bold mb-6 mx-auto">
+                            N
+                        </div>
+                        <h2 class="text-4xl font-bold mb-4">Welcome to Nestibly</h2>
+                        <p class="text-white/90 text-lg">Join our growing community of hosts and guests</p>
+                    </div>
+                </div>
+
+                <!-- Right Side - Form -->
+                <div class="w-full lg:w-1/2 p-8 overflow-y-auto">
+                    <!-- Header -->
+                    <div class="text-center mb-6">
+                        <div class="lg:hidden mx-auto mb-4 w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white text-2xl font-bold">
+                            N
+                        </div>
+                        <h1 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">Create Account</h1>
+                        <p class="text-gray-600 text-sm">Join our community today</p>
+                    </div>
+
+                    <!-- Error Messages -->
+                    <%- include('../partials/errorView') %>
+
+                    <!-- Form -->
+                    <form action="/auth/Sign-up" method="POST" class="space-y-3">
+                        
+                        <!-- Full Name -->
+                        <div>
+                            <label for="fullName" class="block text-gray-700 text-sm font-semibold mb-1.5">
+                                Full Name
+                            </label>
+                            <input type="text" id="fullName" name="fullName"
+                                class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-gray-900 placeholder-gray-400 transition text-sm"
+                                placeholder="Ayush Kumar" required value="<%= typeof formData !== 'undefined' ? formData.fullName : '' %>">
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-gray-700 text-sm font-semibold mb-1.5">
+                                Email Address
+                            </label>
+                            <input type="email" id="email" name="email"
+                                class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-gray-900 placeholder-gray-400 transition text-sm"
+                                placeholder="you@example.com" required value="<%= typeof formData !== 'undefined' ? formData.email : '' %>">
+                        </div>
+
+                        <!-- Password Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <div>
+                                <label for="password" class="block text-gray-700 text-sm font-semibold mb-1.5">
+                                    Password
+                                </label>
+                                <input type="password" id="password" name="password"
+                                    class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-gray-900 placeholder-gray-400 transition text-sm"
+                                    placeholder="Min. 8 characters" required>
+                            </div>
+
+                            <div>
+                                <label for="confirmPassword" class="block text-gray-700 text-sm font-semibold mb-1.5">
+                                    Confirm Password
+                                </label>
+                                <input type="password" id="confirmPassword" name="confirmPassword"
+                                    class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-gray-900 placeholder-gray-400 transition text-sm"
+                                    placeholder="Re-enter password" required>
+                            </div>
+                        </div>
+
+                        <!-- User Type Selection -->
+                        <fieldset class="pt-1">
+                            <legend class="block text-gray-700 text-sm font-semibold mb-2">Join as</legend>
+                            <div class="grid grid-cols-2 gap-2">
+                                <label class="relative flex items-center cursor-pointer">
+                                    <input type="radio" name="userType" value="host"
+                                        class="sr-only peer"
+                                        <%= (typeof formData === 'undefined' || (formData && formData.userType === 'host')) ? 'checked' : '' %>>
+                                    <div class="w-full px-4 py-2 bg-gray-50 border-2 border-gray-200 rounded-lg text-center text-gray-700 font-medium text-sm peer-checked:bg-blue-50 peer-checked:border-blue-500 peer-checked:text-blue-600 hover:border-gray-300 transition-all">
+                                        Host
+                                    </div>
+                                </label>
+
+                                <label class="relative flex items-center cursor-pointer">
+                                    <input type="radio" name="userType" value="guest"
+                                        class="sr-only peer"
+                                        <%= (typeof formData !== 'undefined' && formData.userType === 'guest') ? 'checked' : '' %>>
+                                    <div class="w-full px-4 py-2 bg-gray-50 border-2 border-gray-200 rounded-lg text-center text-gray-700 font-medium text-sm peer-checked:bg-purple-50 peer-checked:border-purple-500 peer-checked:text-purple-600 hover:border-gray-300 transition-all">
+                                        Guest
+                                    </div>
+                                </label>
+                            </div>
+                        </fieldset>
+
+                        <!-- Terms Checkbox -->
+                        <div class="flex items-start space-x-2 pt-1">
+                            <input type="checkbox" id="terms" name="terms"
+                                class="w-4 h-4 mt-0.5 accent-blue-600 cursor-pointer rounded border-gray-300"
+                                <%= (typeof formData !== 'undefined' && formData.terms) ? 'checked' : '' %> required>
+                            <label for="terms" class="text-gray-600 text-xs leading-relaxed">
+                                I agree to the <a href="/terms" class="text-blue-600 hover:text-blue-700 font-semibold">Terms</a> and <a href="/privacy" class="text-blue-600 hover:text-blue-700 font-semibold">Privacy Policy</a>
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit"
+                            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 rounded-lg text-sm font-bold hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0 mt-4">
+                            Create Account
+                        </button>
+
+                        <!-- Login Link -->
+                        <p class="text-center text-gray-600 text-xs mt-3">
+                            Already have an account? 
+                            <a href="/auth/Log-in" class="text-blue-600 font-bold hover:text-blue-700 transition">Sign in</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

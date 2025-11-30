@@ -1,0 +1,26 @@
+<%- include('partials/Header') %>
+<body>
+    <%- include('partials/nav') %>
+    <h1 class="text-center font-extrabold text-2xl ">Here are your hosted homes: </h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 mx-10">
+      <% addedHomes.forEach( home => { %>
+        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+          <img src="<%= home.image[0] %>" alt="Home Image" class="w-full h-48 object-cover" />
+          <div class="p-4 space-y-2">
+            <h2 class="text-xl font-semibold text-gray-800"><%= home.title %></h2>
+            <p class="text-sm text-gray-600">📍 <%= home.location %></p>
+            <p class="text-lg font-bold text-indigo-600">₹ <%= home.price %><span class="text-indigo-600">/ night</span></p>
+
+            <!-- <form action="/host/home-edit/<%= home._id %>" method="post">
+            <button type="submit" class = "inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-indigo-700 transition duration-300">Edit</button>
+            </form> -->
+            <a href="/host/update-form/<%= home._id %>" class = "inline-block mt-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-indigo-700 transition duration-300">Edit</a>
+            <a href="/host/delete/<%= home._id %>" class="inline-block mt-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-indigo-700 transition duration-300">Delete</a>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+</body>
+</html>
+
+
