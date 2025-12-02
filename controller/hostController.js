@@ -2,6 +2,9 @@
 const Database = require('../models/database'); // import home model
 const fs = require('fs').promises;
 const path = require('path');
+const {deleteFromS3} = require('../utils/s3')
+const { uploadToS3 } = require('../utils/multerUtils');
+// const { Console } = require('console');
 
 
 // get request handler for /host/add-home
@@ -16,36 +19,6 @@ exports.addHomeForm =(request, response , next)=>{
 };
 
 // post request handler for /host/add-home When user posts new home.
-// exports.postAddHomeController = (request, response, next)=>{
-//     // Save a web-accessible path (absolute to the site root) instead of the raw filesystem path.
-//     // Multer provides `request.file.filename` and we serve the uploads folder at `/uploads`.
-//     if (!request.files || request.files.length === 0) {
-//     return response.status(400).send('No file uploaded.');
-// }
-
-//     console.log("request.files =", request.files);
-//     // const imgPath = '/uploads/' + request.file.filename;
-//     const imgPath = request.files.map(file => '/uploads/' + file.filename);
-//     const userId = request.session.user._id;
-//     const {title, location, price, description, maxGuests} = request.body;
-//     const data = new Database({title, location, price, image: imgPath, description, maxGuests, user: userId}); 
-//     data.save().then(()=>{
-//         console.log("Home saved successfully!")
-//     })
-//     response.render(
-//         'Thankyou',
-//          {
-//         title:"Thank You",
-//         isLoggedIn: request.isLoggedIn,
-//         user: request.session.user
-//     }
-    
-//     );
-// }
-
-
-
-const { uploadToS3 } = require('../utils/multerUtils');
 
 exports.postAddHomeController = async (req, res) => {
   try {
@@ -62,6 +35,7 @@ exports.postAddHomeController = async (req, res) => {
       const url = await uploadToS3(file.buffer, file.originalname);
       imagePaths.push(url);
     }
+    console.log("Image paths uploaded to S3:", imagePaths);
 
     const { title, location, price, description, maxGuests } = req.body;
 
@@ -152,17 +126,27 @@ exports.updateHome = async (request, response, next) => {
             return response.status(403).render('403');
 
         }
-
+        let newImages = [];
         // Use uploaded file if present, otherwise keep existing image path
-        const imgPath = request.file ? '/uploads/' + request.file.filename : home.image;
-        if (request.file) {
-            try{
-                await fs.unlink(path.join(__dirname, "..", home.image));
-                console.log("old file deleted");
+        if (request.files && request.files.length > 0) {
+            console.log("Files uploaded:", request.files);
+            try{    
+                for (const file of request.files) {
+                const url = await uploadToS3(file.buffer, file.originalname);
+                newImages.push(url);
+                }
+
+                if (home.image && home.image.length > 0){
+                    for (const imgKey of home.image) {
+                        const key = imgKey.split("/").pop();  // extract filename
+                        await deleteFromS3(key);
+                    }
+                }
             }catch(err){
                 console.log('Old file delete failed or file not found:', err.message);
             }
         } else {
+            newImages = home.image;
             console.log("No new file uploaded, keeping existing image:", home.image);
         }
         // Update fields and save (this runs validators defined on the schema)
@@ -170,7 +154,7 @@ exports.updateHome = async (request, response, next) => {
         home.location = location;
         home.price = price;
         home.description = description;
-        home.image = imgPath;
+        home.image = newImages;
         home.maxGuests = maxGuests;
 
         await home.save();
@@ -196,19 +180,17 @@ exports.deleteHome = async (request, response, next)=>{
             console.log('Unauthorized delete attempt by user:', userId);
             return response.status(403).render('403');
         }
-
+        if(home.image && home.image.length > 0){    
+            for (const imgKey of home.image) {
+                // const key = imgKey.split('.amazonaws.com/')[1];
+                const key = imgKey.split("/").pop();  // extract filename
+                await deleteFromS3(key);
+            }
+        }
         const result = await Database.deleteOne({_id: removeId, user: userId});
         console.log("Delete result:", result);
-        if(result.deletedCount>0){
-            // try to remove uploaded file
-            try{
-                await fs.unlink(path.join(__dirname, "..", home.image));
-            }catch(err){
-                console.log('Failed to delete image file:', err.message);
-            }
-            return response.redirect('/host/Manage-Homes');
-        }else{
-            console.log('Sorry! Unable to delete');
+        if( result.acknowledged && result.deletedCount === 1){
+            console.log("Home deleted successfully:", removeId);
             return response.redirect('/host/Manage-Homes');
         }
     }catch(err){

@@ -8,7 +8,7 @@
       <!-- Header -->
       <div class="bg-gradient-to-r from-indigo-600 to-blue-600 px-8 py-10">
         <h1 class="text-3xl font-bold text-white text-center">
-          <%= editing ? '✏️ Update Your Home' : '🏠 Register Your Home' %>
+          <%= editing ? ' Update Your Home' : ' Register Your Home' %>
         </h1>
         <p class="text-indigo-100 text-center mt-2">Fill in the details to get started</p>
       </div>
@@ -129,7 +129,7 @@
             type="submit"
             class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg hover:from-green-600 hover:to-green-700 transition duration-200 transform hover:scale-105"
           >
-            <%= editing ? '💾 Update Home' : ' Add Home' %>
+            <%= editing ? 'Update Home' : ' Add Home' %>
           </button>
           <% if (editing) { %>
             <input type="hidden" name="id" value="<%= homeFound._id %>" />

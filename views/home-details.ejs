@@ -27,7 +27,8 @@
       </div>
 
       <div class="mb-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-3 rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300">
+        <!-- <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-3 rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300"> -->
+        <div class="grid gap-3 rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300 grid-cols-1 sm:grid-cols-2 md:grid-cols-<%= home.image.length >= 4 ? 4 : home.image.length %> md:auto-rows-[190px]">
           <!-- Main large image -->
           <div class="<%= home.image.length <= 3 ? 'md:col-span-2 md:row-span-2' : 'md:col-span-2 md:row-span-2' %> relative group overflow-hidden">
         <img src="<%= home.image[0] %>" alt="Main Image" class="w-full h-full min-h-[400px] object-cover group-hover:scale-105 transition-transform duration-500 cursor-zoom-in" />
@@ -53,7 +54,7 @@
       </div>
 
       <!-- Modal Gallery -->
-      <div id="galleryModal" class="hidden fixed inset-0 backdrop-blur bg-black-100 z-50 flex items-center justify-center p-4" onclick="closeGallery(event)">
+        <div id="galleryModal" class="hidden fixed inset-0 backdrop-blur-sm bg-black/50 z-50 flex items-center justify-center p-4" onclick="closeGallery(event)">
         <div class="relative w-full max-w-4xl" onclick="event.stopPropagation()">
           <button onclick="closeGallery()" class="absolute -top-10 right-0 text-white text-3xl hover:text-gray-300 font-bold">&times;</button>
           <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[70vh] overflow-y-auto">
@@ -219,23 +220,6 @@
 
               <!-- message placeholder for AJAX errors / success -->
               <div id="availabilityMessage"></div>
-
-              <!-- <% if(typeof priceFlag !== 'undefined' && priceFlag) { %>
-                <div class="space-y-3 mb-6 pb-6 border-b border-gray-100 text-base text-gray-700">
-                  <div class="flex justify-between">
-                    <span>₹<%= home.price %> x <%= nights %> nights</span>
-                    <span>₹<%= home.price * nights %></span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span>Service Fee (including taxes)</span>
-                    <span>₹500</span>
-                  </div>
-                </div>
-                <div class="flex justify-between font-bold text-xl text-gray-900 mb-6">
-                  <span>Total before taxes</span>
-                  <span>₹<%= home.price * nights + 500 %></span>
-                </div>
-              <% } %> -->
 
               <!-- AJAX price box (hidden until availability confirmed) -->
               <div id="ajaxPriceBox" class="space-y-3 mb-6 pb-6 border-b border-gray-100 text-base text-gray-700" style="display:none;">

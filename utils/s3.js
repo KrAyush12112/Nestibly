@@ -1,6 +1,4 @@
-// utils/s3.js
-const { S3Client } = require("@aws-sdk/client-s3");
-const { Upload } = require("@aws-sdk/lib-storage");
+const { S3Client, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 require("dotenv").config();
 
 const s3 = new S3Client({
@@ -11,17 +9,16 @@ const s3 = new S3Client({
     }
 });
 
-exports.uploadToS3 = async (file) => {
-    const upload = new Upload({
-        client: s3,
-        params: {
-            Bucket: process.env.AWS_BUCKET,
-            Key: `homes/${Date.now()}-${file.originalname}`,
-            Body: file.buffer,
-            ContentType: file.mimetype
-        }
-    });
-
-    const result = await upload.done();
-    return result.Location; // PUBLIC URL
+exports.deleteFromS3 = async (key) => {
+    try {
+        await s3.send(
+            new DeleteObjectCommand({
+                Bucket: process.env.AWS_BUCKET_NAME,
+                Key: key
+            })
+        );
+        console.log("Deleted from S3:", key);
+    } catch (err) {
+        console.error("S3 Delete Error:", err);
+    }
 };

@@ -17,7 +17,7 @@ hostRoute.get("/Manage-Homes", hostController.manageHomes);
 hostRoute.get("/update-form/:id", hostController.updateForm);
 
 // Route to Update home details
-hostRoute.post("/edit-home", upload.single('image'), hostController.updateHome);
+hostRoute.post("/edit-home", upload.array('image', 10), hostController.updateHome);
 
 // Route to delete home
 hostRoute.get("/delete/:id", hostController.deleteHome);
