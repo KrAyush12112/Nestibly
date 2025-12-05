@@ -15,4 +15,11 @@ authRoute.get("/Sign-up", authController.getSignUp);
 
 authRoute.post("/Sign-up", authController.postSignUp); 
 
+// OTP Verification routes
+authRoute.get("/verify-otp", authController.getVerifyOTP);
+
+authRoute.post("/verify-otp", authController.postVerifyOTP);
+
+authRoute.post("/resend-otp", authController.postResendOTP);
+
 exports.authroute = authRoute;

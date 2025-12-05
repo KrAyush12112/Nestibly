@@ -1,0 +1,157 @@
+<%- include('../partials/Header') %>
+
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <!-- Subtle animated background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none opacity-40">
+        <div class="absolute top-20 right-10 w-72 h-72 bg-blue-300 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 left-10 w-72 h-72 bg-purple-300 rounded-full blur-3xl"></div>
+    </div>
+
+    <%- include('../partials/nav') %>
+
+    <main class="flex items-center justify-center px-4 relative z-10 min-h-[calc(100vh-80px)]">
+        <div class="w-full max-w-md">
+            <!-- Verification Card -->
+            <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8">
+                
+                <!-- Header -->
+                <div class="text-center mb-8">
+                    <div class="mx-auto mb-4 w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white text-3xl font-bold">
+                        N
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Verify Your Email</h1>
+                    <p class="text-gray-600">We've sent a 6-digit code to <span class="font-semibold text-gray-900"><%= email %></span></p>
+                </div>
+
+                <!-- Error Messages -->
+                <%- include('../partials/errorView') %>
+
+                <!-- Verification Form -->
+                <form action="/auth/verify-otp" method="POST" class="space-y-6">
+                    
+                    <!-- OTP Input -->
+                    <div>
+                        <label for="otp" class="block text-gray-700 text-sm font-semibold mb-2">
+                            Enter OTP Code
+                        </label>
+                        <input 
+                            type="text" 
+                            id="otp" 
+                            name="otp"
+                            maxlength="6"
+                            pattern="[0-9]{6}"
+                            inputmode="numeric"
+                            placeholder="000000"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-gray-900 placeholder-gray-400 transition text-2xl text-center tracking-widest font-mono"
+                            required
+                            autofocus
+                        />
+                        <p class="text-gray-500 text-xs mt-1">Enter the 6-digit code from your email</p>
+                    </div>
+
+                    <!-- Hidden email field -->
+                    <input type="hidden" name="email" value="<%= email %>">
+
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit"
+                        class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:shadow-lg hover:from-blue-700 hover:to-purple-700 transition duration-200 transform hover:scale-105 active:scale-95"
+                    >
+                        Verify Email
+                    </button>
+
+                    <!-- Resend OTP Section -->
+                    <div class="border-t border-gray-200 pt-6">
+                        <p class="text-gray-600 text-sm text-center mb-3">
+                            Didn't receive the code?
+                        </p>
+                        <button 
+                            type="button"
+                            class="w-full px-4 py-2 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition duration-200"
+                            onclick="resendOTP()"
+                            id="resendBtn"
+                        >
+                            Resend OTP
+                        </button>
+                        <p class="text-gray-500 text-xs text-center mt-2" id="resendMessage"></p>
+                    </div>
+
+                    <!-- Back to Sign In -->
+                    <div class="text-center">
+                        <p class="text-gray-600 text-sm">
+                            Already verified? 
+                            <a href="/auth/Log-in" class="text-blue-600 font-semibold hover:text-blue-700">
+                                Sign In
+                            </a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Info Box -->
+            <div class="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
+                <p class="text-blue-900 text-sm">
+                    <span class="font-semibold">Note:</span> The OTP will expire in 10 minutes. Please verify your email within this time.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let resendCooldown = 0;
+
+        function updateResendButton() {
+            const resendBtn = document.getElementById('resendBtn');
+            const resendMessage = document.getElementById('resendMessage');
+            
+            if (resendCooldown > 0) {
+                resendBtn.disabled = true;
+                resendBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                resendMessage.textContent = `Try again in ${resendCooldown}s`;
+                resendCooldown--;
+                setTimeout(updateResendButton, 1000);
+            } else {
+                resendBtn.disabled = false;
+                resendBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                resendMessage.textContent = '';
+            }
+        }
+
+        async function resendOTP() {
+            const email = '<%= email %>';
+            console.log("Resend OTP request for email:", email);
+            try {
+                const response = await fetch('/auth/resend-otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    alert('OTP resent successfully! Check your email.');
+                    resendCooldown = 60;
+                    updateResendButton();
+                } else {
+                    alert(data.message || 'Failed to resend OTP. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        }
+
+        // Auto-format OTP input (remove non-digits)
+        const otpInput = document.getElementById('otp');
+        if (otpInput) {
+            otpInput.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+            });
+        }
+    </script>
+</body>
+
+</html>

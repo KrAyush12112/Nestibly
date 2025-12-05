@@ -8,7 +8,7 @@ const homeSchema = new mongoose.Schema({
     image: { type: [String], required: true },
     description: { type: String, required: true },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    maxGuests: { type: Number, required: true }
+    maxGuests: { type: Number, required: true },
 },
 { timestamps: true });
 

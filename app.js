@@ -50,8 +50,8 @@ app.use((request , response , next)=>{
     console.log(request.url , request.method);
     next();
 });
-
-app.use(express.urlencoded());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth",authroute);
 

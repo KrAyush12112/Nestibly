@@ -1,6 +1,8 @@
 const { check, validationResult } = require("express-validator");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const { generateOTP, storeOTP, verifyOTP } = require("../utils/otpUtils");
+const { sendOTPEmail } = require("../utils/emailService");
 
 
 exports.getLogIn =(request, response , next)=>{
@@ -36,6 +38,18 @@ exports.postLogIn = [
                 user: request.session.user
             });
         }
+
+        // Check if email is verified
+        if (!user.isVerified) {
+            return response.status(403).render('auth/login', {
+                title: "Sign In",
+                isLoggedIn: false,
+                errorMessages: ["Please verify your email first. Redirecting to verification page..."],
+                formData: { email },
+                user: request.session.user
+            });
+        }
+
         const doMatch = await bcrypt.compare(password, user.password);
         if (!doMatch) {
             return response.status(401).render('auth/login', {
@@ -69,6 +83,126 @@ exports.getLogOut =(request, response , next)=>{
         response.redirect('/');
     });
    
+};
+
+
+exports.getVerifyOTP = (request, response, next) => {
+    const email = request.query.email;
+    
+    if (!email) {
+        return response.status(400).redirect('/auth/signup');
+    }
+    
+    response.render('auth/verify-otp', {
+        title: "Verify Email",
+        isLoggedIn: false,
+        user: request.session.user,
+        email: email,
+        errorMessages: []
+    });
+};
+
+exports.postVerifyOTP = async (request, response, next) => {
+    const { email, otp } = request.body;
+    
+    if (!email || !otp) {
+        return response.status(400).render('auth/verify-otp', {
+            title: "Verify Email",
+            isLoggedIn: false,
+            user: request.session.user,
+            email: email,
+            errorMessages: ["Please enter both email and OTP."]
+        });
+    }
+    
+    try {
+        const otpResult = await verifyOTP(email, otp);
+        
+        if (!otpResult.valid) {
+            return response.status(400).render('auth/verify-otp', {
+                title: "Verify Email",
+                isLoggedIn: false,
+                user: request.session.user,
+                email: email,
+                errorMessages: [otpResult.message]
+            });
+        }
+        
+        // OTP is valid, mark user as verified
+        const user = await User.findOneAndUpdate(
+            { email: email },
+            { isVerified: true },
+            { new: true }
+        );
+        
+        if (!user) {
+            return response.status(404).render('auth/verify-otp', {
+                title: "Verify Email",
+                isLoggedIn: false,
+                user: request.session.user,
+                email: email,
+                errorMessages: ["User not found."]
+            });
+        }
+        
+        console.log("User verified successfully:", user.email);
+        
+        // Redirect to login with success message
+        request.session.successMessage = "Email verified successfully! Please log in.";
+        response.redirect('/auth/Log-in');
+    } 
+    catch (err) {
+        console.error("Error during OTP verification:", err);
+        return response.status(500).render('auth/verify-otp', {
+            title: "Verify Email",
+            isLoggedIn: false,
+            user: request.session.user,
+            email: email,
+            errorMessages: ["Internal server error. Please try again later."]
+        });
+    }
+};
+
+
+exports.postResendOTP = async (request, response, next) => {
+    const { email } = request.body;
+    // console.log("Resend OTP request for email:", email);
+    if (!email) {
+        return response.status(400).json({ success: false, message: "Email is required." });
+    }
+    
+    try {
+        const user = await User.findOne({ email });
+        
+        if (!user) {
+            return response.status(404).json({ success: false, message: "User not found." });
+        }
+        
+        if (user.isVerified) {
+            return response.status(400).json({ success: false, message: "User is already verified." });
+        }
+        
+        // Generate new OTP and store in MongoDB
+        const otp = generateOTP();
+        const storeResult = await storeOTP(email, otp);
+        
+        if (!storeResult.success) {
+            return response.status(500).json({ success: false, message: "Failed to generate OTP. Please try again." });
+        }
+        
+        // Send OTP email
+        const emailResult = await sendOTPEmail(email, otp, user.fullName);
+        
+        if (!emailResult.success) {
+            return response.status(500).json({ success: false, message: "Failed to resend OTP. Please try again." });
+        }
+        
+        return response.status(200).json({ success: true, message: "OTP resent successfully. Check your email." });
+    } 
+    catch (err) {
+        console.error("Error resending OTP:", err);
+        return response.status(500).json({ success: false, message: "Internal server error." });
+    }
 };
 
 
@@ -122,7 +256,7 @@ exports.postSignUp = [
     }),
 
 
-    (request, response , next)=>{
+    async (request, response , next)=>{
     const {fullName, email, password, userType} = request.body;
     const errors = validationResult(request);
     // console.log("errors",errors);
@@ -142,42 +276,73 @@ exports.postSignUp = [
         });
     }
 
-    bcrypt.hash(password, 12)
-    .then(hashedPassword => {
-        const newUser = new User({ fullName, email, password: hashedPassword, userType});
-        newUser.save()
-        .then((result)=>{
-            console.log("User created successfully:", result);
-            response.redirect('/auth/Log-in');
-        }) 
-        .catch((err)=>{
-            console.error("Error saving user:", err);
-            return response.status(422).render('auth/signup', { 
+    try {
+        const hashedPassword = await bcrypt.hash(password, 12);
+        
+        // Create unverified user
+        const newUser = new User({ 
+            fullName, 
+            email, 
+            password: hashedPassword, 
+            userType,
+            isVerified: false
+        });
+        
+        await newUser.save();
+        console.log("Unverified user created:", newUser);
+        
+        // Generate OTP and store in MongoDB
+        const otp = generateOTP();
+        const storeResult = await storeOTP(email, otp);
+        
+        // If storing OTP failed
+        if (!storeResult.success) {
+            console.error("Failed to store OTP:", storeResult.error);
+            return response.status(500).render('auth/signup', {
                 title: "Sign Up",
                 isLoggedIn: false,
-                errorMessages: ["Email already exists. Please use a different email."],
                 user: request.session.user,
-                formData: { 
-                    fullName,
-                    email,
-                    userType,
-                    password,
-                }
+                errorMessages: ["Failed to generate OTP. Please try again."],
+                formData: { fullName, email, userType, password }
             });
-        });
-    }).catch(err => {
-        console.error("Error hashing password:", err);
-        return response.status(500).render('auth/signup', {
+        }
+        
+        // Send OTP email via Resend
+        const emailResult = await sendOTPEmail(email, otp, fullName);
+        // if sending OTP email failed
+        if (!emailResult.success) {
+            console.error("Failed to send OTP email:", emailResult.error);
+            return response.status(500).render('auth/signup', {
+                title: "Sign Up",
+                isLoggedIn: false,
+                user: request.session.user,
+                errorMessages: ["Failed to send verification email. Please try again."],
+                formData: { fullName, email, userType, password }
+            });
+        }
+        
+        // Redirect to OTP verification page with email
+        response.redirect(`/auth/verify-otp?email=${encodeURIComponent(email)}`); // encodeURIComponent is used to safely encode the email for URL
+    } 
+    catch (err) {
+        console.error("Error during signup:", err);
+        let errorMessage = "Internal server error. Please try again later.";
+        
+        if (err.code === 11000) {
+            errorMessage = "Email already exists. Please use a different email.";
+        }
+        
+        return response.status(422).render('auth/signup', { 
             title: "Sign Up",
             isLoggedIn: false,
+            errorMessages: [errorMessage],
             user: request.session.user,
-            errorMessages: ["Internal server error. Please try again later."],
-            formData: {
+            formData: { 
                 fullName,
-                email,  
+                email,
                 userType,
                 password,
             }
         });
-    });
+    }
 }];
