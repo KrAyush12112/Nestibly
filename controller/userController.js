@@ -16,7 +16,8 @@ exports.redirectHome = (request, response , next)=>{
                 registeredHomes,
                 title: "Welcome",
                 isLoggedIn: request.isLoggedIn,
-                user: request.session.user
+                user: request.session.user,
+                description: "Welcome to Nestibly - Find and list cozy homes easily. Secure bookings and reliable hosts for your perfect getaway."
             })
         }
     ).catch(err=>{
