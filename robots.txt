@@ -1,0 +1,18 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /host/
+Disallow: /auth/
+Disallow: /uploads/
+
+Allow: /
+
+Sitemap: https://yourwebsite.com/sitemap.xml
+
+
+
+
+
