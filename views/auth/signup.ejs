@@ -86,25 +86,29 @@
                         <!-- User Type Selection -->
                         <fieldset class="pt-1">
                             <legend class="block text-gray-700 text-sm font-semibold mb-2">Join as</legend>
+                            <!-- <p class="text-gray-600 text-xs mb-3">Choose your role to get started</p> -->
                             <div class="grid grid-cols-2 gap-2">
                                 <label class="relative flex items-center cursor-pointer">
                                     <input type="radio" name="userType" value="host"
                                         class="sr-only peer"
-                                        <%= (typeof formData === 'undefined' || (formData && formData.userType === 'host')) ? 'checked' : '' %>>
-                                    <div class="w-full px-4 py-2 bg-gray-50 border-2 border-gray-200 rounded-lg text-center text-gray-700 font-medium text-sm peer-checked:bg-blue-50 peer-checked:border-blue-500 peer-checked:text-blue-600 hover:border-gray-300 transition-all">
-                                        Host
+                                        <%= (typeof formData === 'undefined' || (formData && formData.userType === 'host')) ? 'checked' : '' %> required>
+                                    <div class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-lg text-center peer-checked:bg-blue-50 peer-checked:border-blue-500 peer-checked:text-blue-600 hover:border-gray-300 transition-all">
+                                        <div class="font-semibold text-sm text-gray-900 peer-checked:text-blue-600">Host</div>
+                                        <div class="text-xs text-gray-500 peer-checked:text-blue-600 mt-1">List your property</div>
                                     </div>
                                 </label>
 
                                 <label class="relative flex items-center cursor-pointer">
                                     <input type="radio" name="userType" value="guest"
                                         class="sr-only peer"
-                                        <%= (typeof formData !== 'undefined' && formData.userType === 'guest') ? 'checked' : '' %>>
-                                    <div class="w-full px-4 py-2 bg-gray-50 border-2 border-gray-200 rounded-lg text-center text-gray-700 font-medium text-sm peer-checked:bg-purple-50 peer-checked:border-purple-500 peer-checked:text-purple-600 hover:border-gray-300 transition-all">
-                                        Guest
+                                        <%= (typeof formData !== 'undefined' && formData.userType === 'guest') ? 'checked' : '' %> required>
+                                    <div class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-lg text-center peer-checked:bg-purple-50 peer-checked:border-purple-500 peer-checked:text-purple-600 hover:border-gray-300 transition-all">
+                                        <div class="font-semibold text-sm text-gray-900 peer-checked:text-purple-600">Guest</div>
+                                        <div class="text-xs text-gray-500 peer-checked:text-purple-600 mt-1">Book a home</div>
                                     </div>
                                 </label>
                             </div>
+                        </fieldset>
                         </fieldset>
 
                         <!-- Terms Checkbox -->
