@@ -10,7 +10,7 @@ const getFromEmail = () => {
         console.warn('RESEND_DOMAIN not set in .env');
         return 'noreply@resend.dev'; // Fallback for testing
     }
-    return `noreply@${domain}`;
+    return `info@${domain}`;
 };
 
 // Send OTP email via Resend

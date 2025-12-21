@@ -1,0 +1,82 @@
+<%- include('partials/Header') %>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen">
+    <%- include('partials/nav') %>
+
+    <div class="max-w-5xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Get in Touch</h1>
+            <p class="text-purple-200 text-lg">We'd love to hear from you. Send us a message!</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Contact Info Cards -->
+            <div class="lg:col-span-1 space-y-6">
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:border-purple-400/50 transition">
+                    <div class="text-3xl mb-3">📍</div>
+                    <h3 class="text-white font-semibold mb-2">Location</h3>
+                    <p class="text-purple-200">Lucknow, Uttar Pradesh, India</p>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:border-purple-400/50 transition">
+                    <div class="text-3xl mb-3">📧</div>
+                    <h3 class="text-white font-semibold mb-2">Email</h3>
+                    <p class="text-purple-200">support@nestibly.in</p>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:border-purple-400/50 transition">
+                    <div class="text-3xl mb-3">⏱️</div>
+                    <h3 class="text-white font-semibold mb-2">Response Time</h3>
+                    <p class="text-purple-200">We will respond within 24 hours</p>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="lg:col-span-2">
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
+                    <% if (typeof successMessage !== 'undefined' && successMessage) { %>
+                        <div class="mb-6 p-4 bg-green-500/20 border border-green-400/50 text-green-200 rounded-xl">
+                            ✓ <%= successMessage %>
+                        </div>
+                    <% } %>
+
+                    <form action="/contact" method="POST" class="space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-semibold text-purple-200 mb-2">Name</label>
+                                <input type="text" name="name" required value="<%= formData && formData.name ? formData.name : '' %>" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-purple-300/50 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-purple-200 mb-2">Email Address</label>
+                                <input type="email" name="email" required value="<%= formData && formData.email ? formData.email : '' %>" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-purple-300/50 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 transition">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-semibold text-purple-200 mb-2">Type</label>
+                                <select name="type" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 transition">
+                                    <option class="bg-slate-900" value="complaint" <%= formData && formData.type === 'complaint' ? 'selected' : '' %>>Complaint</option>
+                                    <option class="bg-slate-900" value="suggestion" <%= formData && formData.type === 'suggestion' ? 'selected' : '' %>>Suggestion</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-purple-200 mb-2">Subject</label>
+                                <input type="text" name="subject" value="<%= formData && formData.subject ? formData.subject : '' %>" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-purple-300/50 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 transition">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-purple-200 mb-2">Message</label>
+                            <textarea name="message" rows="5" required class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-purple-300/50 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/30 transition resize-none"><%= formData && formData.message ? formData.message : '' %></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50">
+                            Send
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

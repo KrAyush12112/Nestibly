@@ -11,6 +11,7 @@ require("dotenv").config();
 const userRouter = require("./routes/userRoute");
 const {hostroute} = require("./routes/hostroute");
 const {authroute} = require("./routes/authroute");
+const { contactroute } = require('./routes/contactroute');
 const rootDir = require('./utils/pathUtils')
 const upload = require('./utils/multerUtils');
 
@@ -54,6 +55,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth",authroute);
+
+// Contact route
+app.use('/contact', contactroute);
 
 app.use(userRouter);
 
