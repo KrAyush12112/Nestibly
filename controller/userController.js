@@ -64,9 +64,10 @@ exports.listedHomes = (request, response , next)=>{
 exports.searchResults = (request, response, next) => {
     const { location, guests, dates } = request.body;
     console.log("Search parameters:", location, guests, dates);
-
+    let Location = location.replace(/[^a-zA-Z0-9]/g, "");
+    console.log("Cleaned location:", Location); 
     // Simple search implementation: filter by location (case-insensitive)
-    Database.find({ location: { $regex: new RegExp(location, 'i') } })
+    Database.find({ location: { $regex: new RegExp(Location, 'i') } })
         .then((searchResults) => {
             console.log("Search results:", searchResults);
             searchResults = searchResults.filter(home => home.maxGuests >= parseInt(guests)); 

@@ -4,7 +4,6 @@ const bcrypt = require("bcryptjs");
 const { generateOTP, storeOTP, verifyOTP } = require("../utils/otpUtils");
 const { sendOTPEmail } = require("../utils/emailService");
 
-
 exports.getLogIn =(request, response , next)=>{
     //   console.log("session data:", request.session);
     response.render('auth/login',{
